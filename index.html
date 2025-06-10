@@ -16,6 +16,7 @@
         .header-bg {
             background: url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
             position: relative;
+            background-size: cover;
         }
         .header-bg::before {
             content: '';
@@ -37,7 +38,7 @@
             display: block;
             opacity: 1;
         }
-        .publication, .employment, .education, .award {
+        .publication, .employment, .education, .award, .media-item {
             opacity: 0;
             transform: scale(0.95);
         }
@@ -66,7 +67,30 @@
             z-index: 20;
             opacity: 1;
         }
-        @media (max-width: 640px) {
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-menu.active {
+                display: flex;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.95);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+                z-index: 10;
+            }
             .journal-cover {
                 width: 80px;
                 height: 120px;
@@ -74,6 +98,27 @@
             #scroll-down {
                 padding: 0.5rem 1.5rem;
                 font-size: 0.875rem;
+            }
+            .header-bg h1 {
+                font-size: 2.5rem;
+            }
+            .header-bg p {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 320px) {
+            .journal-cover {
+                width: 60px;
+                height: 90px;
+            }
+            #scroll-down {
+                padding: 0.4rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1280px;
             }
         }
     </style>
@@ -306,11 +351,19 @@
     <!-- Footer -->
     <footer class="bg-blue-900 text-white py-6">
         <div class="container mx-auto px-4 text-center">
-            <p>© 2025 Dr. Thilagan K. All rights reserved.</p>
+            <p class="text-base sm:text-sm">© 2025 Dr. Thilagan K. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            hamburger.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+        });
+
         // Tab Switching
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -331,6 +384,10 @@
                 { opacity: 0, scale: 0.95 },
                 { opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' }
             );
+
+            // Close mobile menu on tab click
+            mobileMenu.classList.remove('active');
+            hamburger.textContent = '☰';
         }
 
         tabButtons.forEach(button => {
@@ -346,7 +403,7 @@
         // Scroll Animations
         gsap.registerPlugin(ScrollTrigger);
 
-        document.querySelectorAll('.publication, .employment, .education, .award').forEach(item => {
+        document.querySelectorAll('.publication, .employment, .education, .award, .media-item').forEach(item => {
             gsap.from(item, {
                 scrollTrigger: {
                     trigger: item,
@@ -361,7 +418,7 @@
         });
 
         // Header Animation
-        gsap.from('header h1, header p, header img, header a', {
+        gsap.from('header h1, header p, header img, header a, header button', {
             opacity: 0,
             scale: 0.8,
             duration: 1.2,
@@ -369,6 +426,7 @@
             ease: 'elastic.out(1, 0.5)',
             delay: 0.3
         });
+
         // Scroll Down Button
         const scrollButton = document.getElementById('scroll-down');
         if (scrollButton) {
