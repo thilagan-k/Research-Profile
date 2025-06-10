@@ -66,7 +66,30 @@
             z-index: 20;
             opacity: 1;
         }
-        @media (max-width: 640px) {
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-menu.active {
+                display: flex;
+                flex-direction: column;
+                background: rgba(255, 255, 255, 0.95);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+                z-index: 10;
+            }
             .journal-cover {
                 width: 80px;
                 height: 120px;
@@ -74,6 +97,27 @@
             #scroll-down {
                 padding: 0.5rem 1.5rem;
                 font-size: 0.875rem;
+            }
+            .header-bg h1 {
+                font-size: 2.5rem;
+            }
+            .header-bg p {
+                font-size: 1rem;
+            }
+        }
+        @media (max-width: 320px) {
+            .journal-cover {
+                width: 60px;
+                height: 90px;
+            }
+            #scroll-down {
+                padding: 0.4rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1280px;
             }
         }
     </style>
@@ -118,6 +162,16 @@
             <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white" data-tab="news-media">News & Media</button>
             <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white" data-tab="contact">Contact</button>
         </div>
+            <div id="mobile-menu" class="mobile-menu hidden md:hidden">
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="bio">Bio</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="education">Education</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="employment">Employment</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="publications">Publications</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="skills">Skills</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="awards">Awards</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="contact">Contact</button>
+                <button class="tab-button px-4 py-2 rounded hover:bg-blue-500 hover:text-white w-full text-left" data-tab="news-media">News & Media</button>
+            </div>
     </nav>
 
     <!-- Main Content -->
@@ -311,6 +365,14 @@
     </footer>
 
     <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        hamburger.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            hamburger.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+        });
+        
         // Tab Switching
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -331,6 +393,10 @@
                 { opacity: 0, scale: 0.95 },
                 { opacity: 1, scale: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out' }
             );
+
+            // Close mobile menu on tab click
+            mobileMenu.classList.remove('active');
+            hamburger.textContent = '☰';
         }
 
         tabButtons.forEach(button => {
