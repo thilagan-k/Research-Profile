@@ -7,7 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,63 +18,72 @@
         }
         
         :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --accent: #3b82f6;
-            --accent-dark: #2563eb;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-        
-        [data-theme="dark"] {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent: #60a5fa;
-            --accent-dark: #3b82f6;
-            --border: #334155;
-            --shadow: rgba(0, 0, 0, 0.3);
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --bg-light: #ffffff;
+            --bg-light-secondary: #f8fafc;
+            --bg-light-tertiary: #f1f5f9;
+            --text-light: #0f172a;
+            --text-light-secondary: #475569;
+            --border-light: #e2e8f0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            
+            --bg-dark: #0f172a;
+            --bg-dark-secondary: #1e293b;
+            --bg-dark-tertiary: #334155;
+            --text-dark: #f8fafc;
+            --text-dark-secondary: #cbd5e1;
+            --border-dark: #334155;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            transition: background 0.5s ease, color 0.5s ease;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-light-secondary);
+            color: var(--text-light);
+            line-height: 1.6;
             overflow-x: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        html {
-            scroll-behavior: smooth;
+        body.dark-mode {
+            background: var(--bg-dark);
+            color: var(--text-dark);
         }
         
-        /* Theme Toggle Button */
+        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            width: 60px;
-            height: 60px;
+            top: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
             border-radius: 50%;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 12px var(--shadow-light);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px var(--shadow);
+        }
+        
+        .dark-mode .theme-toggle {
+            background: var(--bg-dark-secondary);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
         }
         
         .theme-toggle:hover {
             transform: scale(1.1);
-            box-shadow: 0 8px 12px var(--shadow);
+            box-shadow: 0 8px 20px var(--shadow-light);
+        }
+        
+        .dark-mode .theme-toggle:hover {
+            box-shadow: 0 8px 20px var(--shadow-dark);
         }
         
         .theme-icon {
@@ -80,188 +91,194 @@
             transition: transform 0.3s ease;
         }
         
-        .theme-toggle:hover .theme-icon {
-            transform: rotate(20deg);
-        }
-        
-        /* Compact Header */
-        .header-compact {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-            padding: 80px 20px 60px;
-            text-align: center;
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            padding: 60px 20px 80px;
             position: relative;
             overflow: hidden;
-            transition: background 0.5s ease;
         }
         
-        .header-compact::before {
+        .header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 20s linear infinite;
-            opacity: 0.3;
-        }
-        
-        @keyframes moveGrid {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-        
-        .profile-container {
-            position: relative;
-            display: inline-block;
-            z-index: 10;
-        }
-        
-        .profile-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-            object-fit: cover;
-        }
-        
-        .profile-img:hover {
-            transform: scale(1.05);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.4;
         }
         
         .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             position: relative;
             z-index: 10;
+        }
+        
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .profile-image-wrapper {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .profile-image {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-name {
+            font-size: 3rem;
+            font-weight: 800;
             color: white;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
         }
         
-        .header-content h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 20px 0 10px;
+        .profile-title {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+            max-width: 700px;
+            margin: 0 auto 24px;
         }
         
-        .header-content p {
-            font-size: 1.1rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Social Icons */
         .social-links {
             display: flex;
+            gap: 12px;
             justify-content: center;
-            gap: 16px;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
         
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
+        .social-link {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
         }
         
-        .social-icon:hover {
-            background: rgba(255, 255, 255, 0.3);
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.25);
             transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         
-        .social-icon img {
-            width: 20px;
-            height: 20px;
+        .social-link img {
+            width: 24px;
+            height: 24px;
             object-fit: contain;
         }
         
         /* Navigation */
-        .nav-bar {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 8px var(--shadow);
+        .nav-wrapper {
             position: sticky;
             top: 0;
-            z-index: 100;
-            transition: all 0.5s ease;
+            z-index: 999;
+            background: var(--bg-light);
+            box-shadow: 0 2px 12px var(--shadow-light);
+            transition: all 0.4s ease;
+        }
+        
+        .dark-mode .nav-wrapper {
+            background: var(--bg-dark-secondary);
+            box-shadow: 0 2px 12px var(--shadow-dark);
         }
         
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 16px 20px;
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
+            padding: 0 20px;
         }
         
-        .nav-container::-webkit-scrollbar {
+        .nav-tabs {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 12px 0;
+        }
+        
+        .nav-tabs::-webkit-scrollbar {
             display: none;
         }
         
-        .tab-button {
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: none;
+        .nav-tab {
+            padding: 12px 24px;
             background: transparent;
-            color: var(--text-secondary);
+            border: none;
+            color: var(--text-light-secondary);
             font-weight: 500;
+            font-size: 0.9375rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             white-space: nowrap;
+            border-radius: 10px;
+            transition: all 0.3s ease;
             position: relative;
         }
         
-        .tab-button::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%) scaleX(0);
-            width: 80%;
-            height: 2px;
-            background: var(--accent);
-            transition: transform 0.3s ease;
+        .dark-mode .nav-tab {
+            color: var(--text-dark-secondary);
         }
         
-        .tab-button:hover {
-            color: var(--accent);
+        .nav-tab:hover {
+            background: var(--bg-light-tertiary);
+            color: var(--primary);
         }
         
-        .tab-button.active {
-            color: var(--accent);
-            background: rgba(59, 130, 246, 0.1);
+        .dark-mode .nav-tab:hover {
+            background: var(--bg-dark-tertiary);
+            color: var(--primary-light);
         }
         
-        .tab-button.active::after {
-            transform: translateX(-50%) scaleX(1);
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .dark-mode .nav-tab.active {
+            background: var(--primary-light);
         }
         
         /* Main Content */
-        .main-content {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
         }
         
         .tab-content {
             display: none;
-            animation: fadeInUp 0.5s ease;
+            animation: fadeIn 0.5s ease;
         }
         
         .tab-content.active {
             display: block;
         }
         
-        @keyframes fadeInUp {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -273,12 +290,16 @@
         }
         
         .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text-primary);
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 40px;
             position: relative;
-            padding-bottom: 15px;
+            padding-bottom: 16px;
+        }
+        
+        .dark-mode .section-title {
+            color: var(--text-dark);
         }
         
         .section-title::after {
@@ -286,44 +307,120 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-            border-radius: 2px;
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 10px;
         }
         
         /* Cards */
         .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px var(--shadow-light);
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px var(--shadow);
+        }
+        
+        .dark-mode .card {
+            background: var(--bg-dark-secondary);
+            border-color: var(--border-dark);
+            box-shadow: 0 2px 8px var(--shadow-dark);
         }
         
         .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px var(--shadow);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px var(--shadow-light);
         }
         
-        .card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        .dark-mode .card:hover {
+            box-shadow: 0 12px 24px var(--shadow-dark);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        
+        .dark-mode .card-title {
+            color: var(--text-dark);
+        }
+        
+        .card-text {
+            color: var(--text-light-secondary);
+            line-height: 1.7;
+        }
+        
+        .dark-mode .card-text {
+            color: var(--text-dark-secondary);
+        }
+        
+        /* Education Cards */
+        .education-card {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .degree-badge {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .education-info h3 {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--text-light);
             margin-bottom: 8px;
         }
         
-        .card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
+        .dark-mode .education-info h3 {
+            color: var(--text-dark);
+        }
+        
+        .education-info p {
+            color: var(--text-light-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .dark-mode .education-info p {
+            color: var(--text-dark-secondary);
+        }
+        
+        .year-badge {
+            display: inline-block;
+            background: var(--bg-light-tertiary);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .dark-mode .year-badge {
+            background: var(--bg-dark-tertiary);
+            color: var(--primary-light);
         }
         
         /* Timeline */
         .timeline {
             position: relative;
-            padding-left: 40px;
+            padding-left: 32px;
         }
         
         .timeline::before {
@@ -332,338 +429,536 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 2px;
-            background: linear-gradient(180deg, var(--accent), transparent);
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 10px;
         }
         
         .timeline-item {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -47px;
-            top: 8px;
-            width: 12px;
-            height: 12px;
+            left: -39px;
+            top: 28px;
+            width: 14px;
+            height: 14px;
+            background: var(--primary);
+            border: 4px solid var(--bg-light);
             border-radius: 50%;
-            background: var(--accent);
-            border: 3px solid var(--bg-card);
-            box-shadow: 0 0 0 3px var(--bg-secondary);
+            box-shadow: 0 0 0 4px var(--bg-light-secondary);
         }
         
-        /* Education Badge */
-        .degree-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-right: 16px;
-            float: left;
+        .dark-mode .timeline-item::before {
+            background: var(--primary-light);
+            border-color: var(--bg-dark-secondary);
+            box-shadow: 0 0 0 4px var(--bg-dark);
         }
         
         /* Publications */
-        .publication-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
+        .publication-card {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            align-items: start;
         }
         
         .journal-cover {
-            width: 80px;
-            height: 120px;
+            width: 90px;
+            height: 135px;
             object-fit: cover;
             border-radius: 8px;
-            box-shadow: 0 4px 8px var(--shadow);
+            box-shadow: 0 4px 12px var(--shadow-light);
             transition: transform 0.3s ease;
-            flex-shrink: 0;
+        }
+        
+        .dark-mode .journal-cover {
+            box-shadow: 0 4px 12px var(--shadow-dark);
         }
         
         .journal-cover:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(2deg);
         }
         
-        /* Skills */
-        .skill-grid {
+        .publication-info {
+            flex: 1;
+        }
+        
+        .subsection-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 48px 0 24px;
+        }
+        
+        .dark-mode .subsection-title {
+            color: var(--primary-light);
+        }
+        
+        /* Skills Grid */
+        .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        
+        .skill-category h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dark-mode .skill-category h3 {
+            color: var(--text-dark);
         }
         
         .skill-item {
-            padding-left: 24px;
-            position: relative;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+            padding: 10px 0;
+            color: var(--text-light-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dark-mode .skill-item {
+            color: var(--text-dark-secondary);
         }
         
         .skill-item::before {
             content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.25rem;
         }
         
-        /* Links */
-        a {
-            color: var(--accent);
+        .dark-mode .skill-item::before {
+            color: var(--primary-light);
+        }
+        
+        /* Award Badge */
+        .award-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .award-card {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        /* News Card */
+        .news-source {
+            display: inline-block;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            margin: 12px 0;
+        }
+        
+        .dark-mode .news-source {
+            color: var(--primary-light);
+        }
+        
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            margin-top: 16px;
         }
         
-        a:hover {
-            color: var(--accent-dark);
+        .btn-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+        
+        /* Contact Info */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .contact-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 16px;
+            align-items: start;
+        }
+        
+        .contact-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .contact-label {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        
+        .dark-mode .contact-label {
+            color: var(--text-dark);
+        }
+        
+        .contact-value {
+            color: var(--text-light-secondary);
+        }
+        
+        .dark-mode .contact-value {
+            color: var(--text-dark-secondary);
+        }
+        
+        .contact-value a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .dark-mode .contact-value a {
+            color: var(--primary-light);
+        }
+        
+        .contact-value a:hover {
             text-decoration: underline;
         }
         
         /* Footer */
         footer {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            padding: 30px 20px;
+            background: var(--bg-light);
+            border-top: 1px solid var(--border-light);
+            padding: 48px 20px;
             text-align: center;
-            color: var(--text-secondary);
-            transition: all 0.5s ease;
+            color: var(--text-light-secondary);
         }
         
-        /* Responsive */
+        .dark-mode footer {
+            background: var(--bg-dark-secondary);
+            border-top-color: var(--border-dark);
+            color: var(--text-dark-secondary);
+        }
+        
+        .footer-text {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .footer-subtext {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        /* Links */
+        a {
+            color: var(--primary);
+            transition: color 0.2s ease;
+        }
+        
+        .dark-mode a {
+            color: var(--primary-light);
+        }
+        
+        a:hover {
+            color: var(--primary-dark);
+        }
+        
+        /* Responsive Design */
         @media (max-width: 768px) {
-            .header-content h1 {
+            .profile-name {
                 font-size: 2rem;
             }
             
-            .header-content p {
-                font-size: 1rem;
+            .profile-title {
+                font-size: 1.125rem;
             }
             
-            .profile-img {
-                width: 100px;
-                height: 100px;
+            .profile-image {
+                width: 110px;
+                height: 110px;
             }
             
             .section-title {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
             
-            .timeline {
-                padding-left: 30px;
+            .card {
+                padding: 24px;
             }
             
-            .journal-cover {
-                width: 60px;
-                height: 90px;
-            }
-            
-            .publication-item {
-                flex-direction: column;
+            .education-card,
+            .publication-card,
+            .award-card {
+                grid-template-columns: 1fr;
             }
             
             .degree-badge {
-                float: none;
-                margin-bottom: 12px;
+                width: 64px;
+                height: 64px;
+                font-size: 1.25rem;
+            }
+            
+            .journal-cover {
+                width: 70px;
+                height: 105px;
+            }
+            
+            .nav-tab {
+                padding: 10px 16px;
+                font-size: 0.875rem;
+            }
+            
+            .theme-toggle {
+                width: 48px;
+                height: 48px;
+                top: 16px;
+                right: 16px;
+            }
+            
+            .theme-icon {
+                font-size: 20px;
+            }
+            
+            .timeline {
+                padding-left: 24px;
+            }
+            
+            .timeline-item::before {
+                left: -31px;
+            }
+            
+            .container {
+                padding: 40px 16px;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
             }
         }
         
-        /* Smooth Transitions for Theme */
-        * {
-            transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
-        }
-        
-        /* Button Styles */
-        .btn-primary {
-            display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            color: white;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px var(--shadow);
-            text-decoration: none;
-        }
-        
-        /* Contact Icons */
-        .contact-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(59, 130, 246, 0.1);
-            color: var(--accent);
-            font-size: 1.5rem;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        
-        .info-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
+        @media (max-width: 480px) {
+            .profile-name {
+                font-size: 1.75rem;
+            }
+            
+            .profile-title {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+            
+            .subsection-title {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" data-testid="theme-toggle">
-        <span class="theme-icon" id="theme-icon">🌙</span>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" data-testid="theme-toggle">
+        <span class="theme-icon">🌙</span>
     </button>
 
-    <!-- Compact Header -->
-    <header class="header-compact" data-testid="header">
+    <!-- Header -->
+    <header class="header" data-testid="header">
         <div class="header-content">
-            <div class="profile-container">
-                <img src="Dr_Thilagan_K.jpg" alt="Dr. Thilagan K." class="profile-img" data-testid="profile-image">
-            </div>
-            <h1 data-testid="profile-name">Dr. Thilagan K.</h1>
-            <p data-testid="profile-title">Research Scientist | Desalination, Compact Desalination & Solar Energy</p>
-            
-            <div class="social-links" data-testid="social-links">
-                <a href="mailto:kthilagan177@gmail.com" class="social-icon" title="Email" data-testid="email-link">
-                    <img src="logo/gmail-logo.png" alt="Email">
-                </a>
-                <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" target="_blank" class="social-icon" title="Google Scholar" data-testid="scholar-link">
-                    <img src="logo/Google_Scholar_logo1.jpg" alt="Google Scholar">
-                </a>
-                <a href="https://orcid.org/0000-0001-7695-8133" target="_blank" class="social-icon" title="ORCID" data-testid="orcid-link">
-                    <img src="logo/ORCID_logo.png" alt="ORCID">
-                </a>
-                <a href="https://www.linkedin.com/in/thilagan-k/" target="_blank" class="social-icon" title="LinkedIn" data-testid="linkedin-link">
-                    <img src="logo/LinkedIn_logo.png" alt="LinkedIn">
-                </a>
-                <a href="https://www.researchgate.net/profile/Thilagan-Kannappan?ev=hdr_xprf" target="_blank" class="social-icon" title="ResearchGate" data-testid="researchgate-link">
-                    <img src="logo/RG_logo.jpg" alt="ResearchGate">
-                </a>
+            <div class="profile-section">
+                <div class="profile-image-wrapper">
+                    <img src="Dr_Thilagan_K.jpg" alt="Dr. Thilagan K." class="profile-image" data-testid="profile-image">
+                </div>
+                <h1 class="profile-name" data-testid="profile-name">Dr. Thilagan K.</h1>
+                <p class="profile-title" data-testid="profile-title">Research Scientist | Desalination, Compact Desalination & Solar Energy</p>
+                
+                <div class="social-links" data-testid="social-links">
+                    <a href="mailto:kthilagan177@gmail.com" class="social-link" title="Email" data-testid="email-link">
+                        <img src="logo/gmail-logo.png" alt="Email">
+                    </a>
+                    <a href="https://scholar.google.com/citations?user=5lldYecAAAAJ" target="_blank" class="social-link" title="Google Scholar" data-testid="scholar-link">
+                        <img src="logo/Google_Scholar_logo1.jpg" alt="Google Scholar">
+                    </a>
+                    <a href="https://orcid.org/0000-0001-7695-8133" target="_blank" class="social-link" title="ORCID" data-testid="orcid-link">
+                        <img src="logo/ORCID_logo.png" alt="ORCID">
+                    </a>
+                    <a href="https://www.linkedin.com/in/thilagan-k/" target="_blank" class="social-link" title="LinkedIn" data-testid="linkedin-link">
+                        <img src="logo/LinkedIn_logo.png" alt="LinkedIn">
+                    </a>
+                    <a href="https://www.researchgate.net/profile/Thilagan-Kannappan?ev=hdr_xprf" target="_blank" class="social-link" title="ResearchGate" data-testid="researchgate-link">
+                        <img src="logo/RG_logo.jpg" alt="ResearchGate">
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Navigation -->
-    <nav class="nav-bar" data-testid="navigation">
+    <nav class="nav-wrapper" data-testid="navigation">
         <div class="nav-container">
-            <button class="tab-button active" data-tab="bio" data-testid="tab-bio">Bio</button>
-            <button class="tab-button" data-tab="education" data-testid="tab-education">Education</button>
-            <button class="tab-button" data-tab="employment" data-testid="tab-employment">Employment</button>
-            <button class="tab-button" data-tab="publications" data-testid="tab-publications">Publications</button>
-            <button class="tab-button" data-tab="skills" data-testid="tab-skills">Skills</button>
-            <button class="tab-button" data-tab="awards" data-testid="tab-awards">Awards</button>
-            <button class="tab-button" data-tab="news" data-testid="tab-news">News & Media</button>
-            <button class="tab-button" data-tab="contact" data-testid="tab-contact">Contact</button>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="bio" data-testid="tab-bio">About</button>
+                <button class="nav-tab" data-tab="education" data-testid="tab-education">Education</button>
+                <button class="nav-tab" data-tab="employment" data-testid="tab-employment">Employment</button>
+                <button class="nav-tab" data-tab="publications" data-testid="tab-publications">Publications</button>
+                <button class="nav-tab" data-tab="skills" data-testid="tab-skills">Skills</button>
+                <button class="nav-tab" data-tab="awards" data-testid="tab-awards">Awards</button>
+                <button class="nav-tab" data-tab="news" data-testid="tab-news">News</button>
+                <button class="nav-tab" data-tab="contact" data-testid="tab-contact">Contact</button>
+            </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main>
         <!-- Bio Section -->
         <section id="bio" class="tab-content active" data-testid="bio-section">
-            <h2 class="section-title">About Me</h2>
-            <div class="card">
-                <p>Dr. Thilagan K. is a dedicated researcher specializing in solar energy and desalination systems. With a Ph.D. from IIT Madras, his work focuses on innovative solutions for sustainable water purification using renewable energy. He has published extensively in high-impact journals and presented at international conferences. Dr. Thilagan is a member of prestigious organizations like the International Solar Energy Society and the Indian Desalination Association.</p>
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="card">
+                    <p class="card-text">
+                        Dr. Thilagan K. is a dedicated researcher specializing in solar energy and desalination systems. With a Ph.D. from IIT Madras, his work focuses on innovative solutions for sustainable water purification using renewable energy. He has published extensively in high-impact journals and presented at international conferences. Dr. Thilagan is a member of prestigious organizations like the International Solar Energy Society and the Indian Desalination Association.
+                    </p>
+                </div>
             </div>
         </section>
 
         <!-- Education Section -->
         <section id="education" class="tab-content" data-testid="education-section">
-            <h2 class="section-title">Education</h2>
-            
-            <div class="card" data-testid="education-phd">
-                <div class="degree-badge">PhD</div>
-                <h3>Ph.D., Mechanical Engineering</h3>
-                <p><strong>Indian Institute of Technology Madras</strong>, Chennai, Tamil Nadu</p>
-                <p class="text-sm">2018 - 2025</p>
-                <p style="margin-top: 12px;"><strong>Thesis:</strong> Experimental Investigation on Solar-Driven Multi-Effect Compact Sea Water Desalination System</p>
-            </div>
-            
-            <div class="card" data-testid="education-ms">
-                <div class="degree-badge">MS</div>
-                <h3>M.S. (By Research)</h3>
-                <p><strong>CEG Guindy Campus, Anna University</strong>, Chennai, Tamil Nadu</p>
-                <p class="text-sm">2014 - 2017</p>
-                <p style="margin-top: 12px;"><strong>Thesis:</strong> Studies on Drying of Leafy Vegetables Using Modified Solar Evacuated Tube Collectors</p>
-            </div>
-            
-            <div class="card" data-testid="education-be">
-                <div class="degree-badge">BE</div>
-                <h3>B.E., Mechanical Engineering</h3>
-                <p><strong>Sri Venkateswara College of Engineering</strong>, Sriperumbudur, Tamil Nadu</p>
-                <p class="text-sm">2010 - 2014</p>
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                
+                <div class="card" data-testid="education-phd">
+                    <div class="education-card">
+                        <div class="degree-badge">PhD</div>
+                        <div class="education-info">
+                            <h3>Ph.D., Mechanical Engineering</h3>
+                            <p><strong>Indian Institute of Technology Madras</strong></p>
+                            <p>Chennai, Tamil Nadu</p>
+                            <span class="year-badge">2018 - 2025</span>
+                            <p style="margin-top: 16px;"><strong>Thesis:</strong> Experimental Investigation on Solar-Driven Multi-Effect Compact Sea Water Desalination System</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" data-testid="education-ms">
+                    <div class="education-card">
+                        <div class="degree-badge" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);">MS</div>
+                        <div class="education-info">
+                            <h3>M.S. (By Research)</h3>
+                            <p><strong>CEG Guindy Campus, Anna University</strong></p>
+                            <p>Chennai, Tamil Nadu</p>
+                            <span class="year-badge">2014 - 2017</span>
+                            <p style="margin-top: 16px;"><strong>Thesis:</strong> Studies on Drying of Leafy Vegetables Using Modified Solar Evacuated Tube Collectors</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" data-testid="education-be">
+                    <div class="education-card">
+                        <div class="degree-badge" style="background: linear-gradient(135deg, #10b981, #059669);">BE</div>
+                        <div class="education-info">
+                            <h3>B.E., Mechanical Engineering</h3>
+                            <p><strong>Sri Venkateswara College of Engineering</strong></p>
+                            <p>Sriperumbudur, Tamil Nadu</p>
+                            <span class="year-badge">2010 - 2014</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Employment Section -->
         <section id="employment" class="tab-content" data-testid="employment-section">
-            <h2 class="section-title">Employment History</h2>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-1">
-                        <h3>Post Doctoral Researcher</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Oct 2025 - Present</p>
-                    </div>
-                </div>
+            <div class="container">
+                <h2 class="section-title">Employment History</h2>
                 
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-2">
-                        <h3>Post Doctoral Fellow</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">May 2025 - Sep 2025</p>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-1">
+                            <h3 class="card-title">Post Doctoral Researcher</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Oct 2025 - Present</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-3">
-                        <h3>Senior Project Scientist</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Mar 2025 - Apr 2025</p>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-2">
+                            <h3 class="card-title">Post Doctoral Fellow</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">May 2025 - Sep 2025</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-4">
-                        <h3>Project Officer</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Apr 2023 - Dec 2024</p>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-3">
+                            <h3 class="card-title">Senior Project Scientist</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Mar 2025 - Apr 2025</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-5">
-                        <h3>Project Officer</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Nov 2017 - Mar 2020</p>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-4">
+                            <h3 class="card-title">Project Officer</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Apr 2023 - Dec 2024</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-6">
-                        <h3>Project Associate</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Aug 2017 - Oct 2017</p>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-5">
+                            <h3 class="card-title">Project Officer</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Nov 2017 - Mar 2020</span>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="card" data-testid="employment-7">
-                        <h3>Project Associate</h3>
-                        <p>Department of Mechanical Engineering, IIT Madras</p>
-                        <p class="text-sm">Sep 2016 - Apr 2017</p>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-6">
+                            <h3 class="card-title">Project Associate</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Aug 2017 - Oct 2017</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="card" data-testid="employment-7">
+                            <h3 class="card-title">Project Associate</h3>
+                            <p class="card-text">Department of Mechanical Engineering, IIT Madras</p>
+                            <span class="year-badge">Sep 2016 - Apr 2017</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -671,229 +966,256 @@
 
         <!-- Publications Section -->
         <section id="publications" class="tab-content" data-testid="publications-section">
-            <h2 class="section-title">Publications</h2>
-            
-            <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 20px; color: var(--accent);">Journal Articles</h3>
-            
-            <div class="card" data-testid="publication-1">
-                <div class="publication-item">
-                    <a href="https://www.sciencedirect.com/journal/solar-compass" target="_blank">
-                        <img src="journal_img/Solar compass.jpg" alt="Solar Compass" class="journal-cover">
-                    </a>
-                    <div>
-                        <p>K. Thilagan, S. Advaith, and A. Mani, "Simulation studies and experimental validation on solar multi effect desalination system," <i>Solar Compass</i>, vol. 13, pp. 100–110, Mar. 2025. DOI: <a href="https://doi.org/10.1016/j.solcom.2025.100110" target="_blank">10.1016/j.solcom.2025.100110</a></p>
+            <div class="container">
+                <h2 class="section-title">Publications</h2>
+                
+                <h3 class="subsection-title">Journal Articles</h3>
+                
+                <div class="card" data-testid="publication-1">
+                    <div class="publication-card">
+                        <a href="https://www.sciencedirect.com/journal/solar-compass" target="_blank">
+                            <img src="journal_img/Solar compass.jpg" alt="Solar Compass" class="journal-cover">
+                        </a>
+                        <div class="publication-info">
+                            <p class="card-text">K. Thilagan, S. Advaith, and A. Mani, "Simulation studies and experimental validation on solar multi effect desalination system," <em>Solar Compass</em>, vol. 13, pp. 100–110, Mar. 2025. DOI: <a href="https://doi.org/10.1016/j.solcom.2025.100110" target="_blank">10.1016/j.solcom.2025.100110</a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="card" data-testid="publication-2">
-                <div class="publication-item">
-                    <a href="https://www.sciencedirect.com/journal/solar-energy" target="_blank">
-                        <img src="journal_img/solar energy.jpg" alt="Solar Energy" class="journal-cover">
-                    </a>
-                    <div>
-                        <p>M. Annamalai and K. Thilagan, "Experimental studies on solar multi-effect sea water desalination system," <i>Solar Energy</i>, vol. 259, pp. 246–256, Jul. 2023. DOI: <a href="https://doi.org/10.1016/j.solener.2023.05.004" target="_blank">10.1016/j.solener.2023.05.004</a></p>
+                
+                <div class="card" data-testid="publication-2">
+                    <div class="publication-card">
+                        <a href="https://www.sciencedirect.com/journal/solar-energy" target="_blank">
+                            <img src="journal_img/solar energy.jpg" alt="Solar Energy" class="journal-cover">
+                        </a>
+                        <div class="publication-info">
+                            <p class="card-text">M. Annamalai and K. Thilagan, "Experimental studies on solar multi-effect sea water desalination system," <em>Solar Energy</em>, vol. 259, pp. 246–256, Jul. 2023. DOI: <a href="https://doi.org/10.1016/j.solener.2023.05.004" target="_blank">10.1016/j.solener.2023.05.004</a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="card" data-testid="publication-3">
-                <div class="publication-item">
-                    <a href="https://www.scientific.net/AMR/Details" target="_blank">
-                        <img src="journal_img/AMR.jpeg" alt="Advanced Materials Research" class="journal-cover">
-                    </a>
-                    <div>
-                        <p>P. Raghu, K. Thilagan, M. Thirumoorthy, S. Lokachari, and N. Nallusamy, "Spray Characteristics of Diesel and Biodiesel in Direct Injection Diesel Engine," <i>Advanced Materials Research</i>, vol. 768, pp. 173–179, Sep. 2013. DOI: <a href="https://doi.org/10.4028/www.scientific.net/AMR.768.173" target="_blank">10.4028/www.scientific.net/AMR.768.173</a></p>
+                
+                <div class="card" data-testid="publication-3">
+                    <div class="publication-card">
+                        <a href="https://www.scientific.net/AMR/Details" target="_blank">
+                            <img src="journal_img/AMR.jpeg" alt="Advanced Materials Research" class="journal-cover">
+                        </a>
+                        <div class="publication-info">
+                            <p class="card-text">P. Raghu, K. Thilagan, M. Thirumoorthy, S. Lokachari, and N. Nallusamy, "Spray Characteristics of Diesel and Biodiesel in Direct Injection Diesel Engine," <em>Advanced Materials Research</em>, vol. 768, pp. 173–179, Sep. 2013. DOI: <a href="https://doi.org/10.4028/www.scientific.net/AMR.768.173" target="_blank">10.4028/www.scientific.net/AMR.768.173</a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <h3 style="font-size: 1.5rem; font-weight: 600; margin: 30px 0 20px; color: var(--accent);">Conference Proceedings</h3>
-            
-            <div class="card" data-testid="conference-1">
-                <p>Prakash K., Thilagan K., Advaith S., and Srikrishna Sahu, "Thermodynamic and Performance analysis of an energy-efficient low-temperature grey water treatment system," in <i>8th International Conference on Polygeneration (ICP2025)</i>, 2025</p>
-            </div>
-            
-            <div class="card" data-testid="conference-2">
-                <p>Thilagan K., Advaith S., and Mani A., "Experimental Studies on Compact Desalination System," in <i>8th International Conference on Polygeneration (ICP2025)</i>, 2025</p>
-            </div>
-            
-            <div class="card" data-testid="conference-3">
-                <p>Thilagan K., Advaith S., and Mani A., "Simulation studies and experimental validation on solar multi-effect desalination system in Kanyakumari," in <i>8th National and 2nd International Conference on Refrigeration and Air Conditioning</i>, Chennai, India, 2024, pp. 1–9</p>
-            </div>
-            
-            <div class="card" data-testid="conference-4">
-                <p>Thilagan K., and Annamalai M., "Experimental studies on solar multi-effect desalination system," in <i>ISES and IEA SHC International Conference on Solar Energy for Buildings and Industry</i>, 2022, pp. 846–857. DOI: <a href="https://doi.org/10.18086/eurosun.2022.09.01" target="_blank">10.18086/eurosun.2022.09.01</a></p>
-            </div>
-            
-            <div class="card" data-testid="conference-5">
-                <p>Thilagan K., and Annamalai M., "Falling Film Measurements using High Speed Camera and High Speed Infra-Red Camera," in <i>ISES and IEA SHC International Conference on Solar Energy for Buildings and Industry</i>, 2022, pp. 858–868. DOI: <a href="https://doi.org/10.18086/eurosun.2022.09.02" target="_blank">10.18086/eurosun.2022.09.02</a></p>
-            </div>
-            
-            <div class="card" data-testid="conference-6">
-                <p>Thilagan K., and Mani A., "Heat and mass transfer studies on falling film over metal foam layered horizontal tubes in MED system using high speed and high speed infra-red cameras," in <i>International Symposium on Compact Solar Desalination and Cold Storage Systems</i>, Chennai, India, 2022</p>
-            </div>
-            
-            <div class="card" data-testid="conference-7">
-                <p>Thilagan K., Sivakumar R., and Saravanan R., "Energy analysis of thin layer drying of moringa leaf using solar evacuated finned tube collectors," in <i>National Conference on Large Scale Multi-Disciplinary Systems of National Significance</i>, Satish Dhawan Space Centre SHAR, 2016</p>
-            </div>
-            
-            <div class="card" data-testid="conference-8">
-                <p>Thilagan K., Elaya Perumal A., and Saravanan R., "Energy analysis of thin layer drying of tomato using solar evacuated finned tube collectors," in <i>4th National Conference on Refrigeration and Air Conditioning</i>, 2015</p>
-            </div>
-            
-            <div class="card" data-testid="conference-9">
-                <p>Raghu P., Thilagan K., Thirumoorthy M., Lokachari S., and Nallusamy N., "Spray Characteristics of Diesel and Biodiesel in Direct Injection Diesel Engine," in <i>International Conference on Energy Efficient Technologies for Sustainability</i>, St. Xavier's Catholic College of Engineering, Nagercoil, Tamil Nadu, India, Apr. 2013</p>
+                
+                <h3 class="subsection-title">Conference Proceedings</h3>
+                
+                <div class="card" data-testid="conference-1">
+                    <p class="card-text">Prakash K., Thilagan K., Advaith S., and Srikrishna Sahu, "Thermodynamic and Performance analysis of an energy-efficient low-temperature grey water treatment system," in <em>8th International Conference on Polygeneration (ICP2025)</em>, 2025</p>
+                </div>
+                
+                <div class="card" data-testid="conference-2">
+                    <p class="card-text">Thilagan K., Advaith S., and Mani A., "Experimental Studies on Compact Desalination System," in <em>8th International Conference on Polygeneration (ICP2025)</em>, 2025</p>
+                </div>
+                
+                <div class="card" data-testid="conference-3">
+                    <p class="card-text">Thilagan K., Advaith S., and Mani A., "Simulation studies and experimental validation on solar multi-effect desalination system in Kanyakumari," in <em>8th National and 2nd International Conference on Refrigeration and Air Conditioning</em>, Chennai, India, 2024, pp. 1–9</p>
+                </div>
+                
+                <div class="card" data-testid="conference-4">
+                    <p class="card-text">Thilagan K., and Annamalai M., "Experimental studies on solar multi-effect desalination system," in <em>ISES and IEA SHC International Conference on Solar Energy for Buildings and Industry</em>, 2022, pp. 846–857. DOI: <a href="https://doi.org/10.18086/eurosun.2022.09.01" target="_blank">10.18086/eurosun.2022.09.01</a></p>
+                </div>
+                
+                <div class="card" data-testid="conference-5">
+                    <p class="card-text">Thilagan K., and Annamalai M., "Falling Film Measurements using High Speed Camera and High Speed Infra-Red Camera," in <em>ISES and IEA SHC International Conference on Solar Energy for Buildings and Industry</em>, 2022, pp. 858–868. DOI: <a href="https://doi.org/10.18086/eurosun.2022.09.02" target="_blank">10.18086/eurosun.2022.09.02</a></p>
+                </div>
+                
+                <div class="card" data-testid="conference-6">
+                    <p class="card-text">Thilagan K., and Mani A., "Heat and mass transfer studies on falling film over metal foam layered horizontal tubes in MED system using high speed and high speed infra-red cameras," in <em>International Symposium on Compact Solar Desalination and Cold Storage Systems</em>, Chennai, India, 2022</p>
+                </div>
+                
+                <div class="card" data-testid="conference-7">
+                    <p class="card-text">Thilagan K., Sivakumar R., and Saravanan R., "Energy analysis of thin layer drying of moringa leaf using solar evacuated finned tube collectors," in <em>National Conference on Large Scale Multi-Disciplinary Systems of National Significance</em>, Satish Dhawan Space Centre SHAR, 2016</p>
+                </div>
+                
+                <div class="card" data-testid="conference-8">
+                    <p class="card-text">Thilagan K., Elaya Perumal A., and Saravanan R., "Energy analysis of thin layer drying of tomato using solar evacuated finned tube collectors," in <em>4th National Conference on Refrigeration and Air Conditioning</em>, 2015</p>
+                </div>
+                
+                <div class="card" data-testid="conference-9">
+                    <p class="card-text">Raghu P., Thilagan K., Thirumoorthy M., Lokachari S., and Nallusamy N., "Spray Characteristics of Diesel and Biodiesel in Direct Injection Diesel Engine," in <em>International Conference on Energy Efficient Technologies for Sustainability</em>, St. Xavier's Catholic College of Engineering, Nagercoil, Tamil Nadu, India, Apr. 2013</p>
+                </div>
             </div>
         </section>
 
         <!-- Skills Section -->
         <section id="skills" class="tab-content" data-testid="skills-section">
-            <h2 class="section-title">Skills & Expertise</h2>
-            
-            <div class="skill-grid">
-                <div class="card" data-testid="skills-coding">
-                    <h3>Programming & Coding</h3>
-                    <div class="skill-item">Matlab - Advanced simulation and data analysis</div>
-                    <div class="skill-item">LaTeX - Scientific documentation and publishing</div>
-                </div>
+            <div class="container">
+                <h2 class="section-title">Skills & Expertise</h2>
                 
-                <div class="card" data-testid="skills-software">
-                    <h3>Software & Tools</h3>
-                    <div class="skill-item">Ansys - Finite element analysis</div>
-                    <div class="skill-item">Comsol - Multiphysics simulation</div>
-                    <div class="skill-item">Solidworks - 3D CAD modeling</div>
-                    <div class="skill-item">AutoCAD - Technical drawing</div>
-                    <div class="skill-item">EES - Engineering equation solver</div>
-                    <div class="skill-item">TRNSYS - Thermal system simulation</div>
-                </div>
-                
-                <div class="card" data-testid="skills-languages">
-                    <h3>Languages</h3>
-                    <div class="skill-item">English - Proficient (Writing & Speaking)</div>
-                    <div class="skill-item">Tamil - Native Speaker</div>
-                </div>
-                
-                <div class="card" data-testid="skills-research">
-                    <h3>Research Areas</h3>
-                    <div class="skill-item">Solar Energy Systems</div>
-                    <div class="skill-item">Desalination Technologies</div>
-                    <div class="skill-item">Renewable Energy</div>
-                    <div class="skill-item">Thermal Engineering</div>
-                    <div class="skill-item">Heat & Mass Transfer</div>
+                <div class="skills-grid">
+                    <div class="card skill-category" data-testid="skills-coding">
+                        <h3>💻 Programming & Coding</h3>
+                        <div class="skill-item">Matlab - Advanced simulation and data analysis</div>
+                        <div class="skill-item">LaTeX - Scientific documentation and publishing</div>
+                    </div>
+                    
+                    <div class="card skill-category" data-testid="skills-software">
+                        <h3>🛠️ Software & Tools</h3>
+                        <div class="skill-item">Ansys - Finite element analysis</div>
+                        <div class="skill-item">Comsol - Multiphysics simulation</div>
+                        <div class="skill-item">Solidworks - 3D CAD modeling</div>
+                        <div class="skill-item">AutoCAD - Technical drawing</div>
+                        <div class="skill-item">EES - Engineering equation solver</div>
+                        <div class="skill-item">TRNSYS - Thermal system simulation</div>
+                    </div>
+                    
+                    <div class="card skill-category" data-testid="skills-languages">
+                        <h3>🌐 Languages</h3>
+                        <div class="skill-item">English - Proficient (Writing & Speaking)</div>
+                        <div class="skill-item">Tamil - Native Speaker</div>
+                    </div>
+                    
+                    <div class="card skill-category" data-testid="skills-research">
+                        <h3>🔬 Research Areas</h3>
+                        <div class="skill-item">Solar Energy Systems</div>
+                        <div class="skill-item">Desalination Technologies</div>
+                        <div class="skill-item">Renewable Energy</div>
+                        <div class="skill-item">Thermal Engineering</div>
+                        <div class="skill-item">Heat & Mass Transfer</div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Awards Section -->
         <section id="awards" class="tab-content" data-testid="awards-section">
-            <h2 class="section-title">Awards & Recognition</h2>
-            
-            <div class="card" data-testid="award-1">
-                <h3>🏆 Early Stage Researcher</h3>
-                <p>University Rovira I Virgili, Tarragona, Spain</p>
-                <p class="text-sm">March 2015</p>
-            </div>
-            
-            <div class="card" data-testid="award-2">
-                <h3>📋 Organizing Committee Member</h3>
-                <p>Workshop on Natural Refrigerants-based HVAC&R Systems, IIT Madras</p>
-                <p class="text-sm">April 2025</p>
-            </div>
-            
-            <div class="card" data-testid="award-3">
-                <h3>📋 Organizing Committee Member</h3>
-                <p>8th National and 2nd International Conference on Refrigeration and Air Conditioning, IIT Madras</p>
-                <p class="text-sm">March 2024</p>
+            <div class="container">
+                <h2 class="section-title">Awards & Recognition</h2>
+                
+                <div class="card" data-testid="award-1">
+                    <div class="award-card">
+                        <div class="award-icon">🏆</div>
+                        <div>
+                            <h3 class="card-title">Early Stage Researcher</h3>
+                            <p class="card-text">University Rovira I Virgili, Tarragona, Spain</p>
+                            <span class="year-badge">March 2015</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" data-testid="award-2">
+                    <div class="award-card">
+                        <div class="award-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">📋</div>
+                        <div>
+                            <h3 class="card-title">Organizing Committee Member</h3>
+                            <p class="card-text">Workshop on Natural Refrigerants-based HVAC&R Systems, IIT Madras</p>
+                            <span class="year-badge">April 2025</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" data-testid="award-3">
+                    <div class="award-card">
+                        <div class="award-icon" style="background: linear-gradient(135deg, #10b981, #059669);">📋</div>
+                        <div>
+                            <h3 class="card-title">Organizing Committee Member</h3>
+                            <p class="card-text">8th National and 2nd International Conference on Refrigeration and Air Conditioning, IIT Madras</p>
+                            <span class="year-badge">March 2024</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- News & Media Section -->
+        <!-- News Section -->
         <section id="news" class="tab-content" data-testid="news-section">
-            <h2 class="section-title">News & Media Coverage</h2>
-            
-            <div class="card" data-testid="news-1">
-                <h3>IIT-M's solar-powered unit aims at 10K litres of potable water per day</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">The Times of India, Chennai | June 2025</p>
-                <p>Discusses IIT Madras's solar-powered desalination unit targeting a capacity of 10,000 litres of potable water daily.</p>
-                <a href="https://timesofindia.indiatimes.com/city/chennai/iit-ms-solar-powered-desal-unit-aims-at-10k-litres-of-potable-water-per-day/articleshow/121605041.cms" target="_blank" class="btn-primary" style="margin-top: 12px;">Read Article →</a>
-            </div>
-            
-            <div class="card" data-testid="news-2">
-                <h3>IIT Madras has developed a solar-powered desalination system</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">IIT Madras LinkedIn | 2025</p>
-                <p>Highlights the development of a solar-powered desalination system that converts seawater into clean drinking water using only renewable energy.</p>
-                <a href="https://www.linkedin.com/posts/reachiitm_techtuesday-iitmadras-waterinnovation-activity-7327932020595085313-FOBt" target="_blank" class="btn-primary" style="margin-top: 12px;">Read Article →</a>
-            </div>
-            
-            <div class="card" data-testid="news-3">
-                <h3>A Solar Multi-Effect Desalination Success!</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">IIT Madras Tech Talk | 2025</p>
-                <p>Features the success of a solar multi-effect desalination system developed at IIT Madras for producing fresh water.</p>
-                <a href="https://tech-talk.iitm.ac.in/a-solar-multi-effect-desalination-success/" target="_blank" class="btn-primary" style="margin-top: 12px;">Read Article →</a>
-            </div>
-            
-            <div class="card" data-testid="news-4">
-                <h3>First plant to convert seawater into potable water using solar energy</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">Polimer News | 2021</p>
-                <p>Showcases the first solar-powered plant in India to convert seawater into potable water, developed by IIT Madras.</p>
-                <a href="https://www.youtube.com/watch?v=jPILXuN3_UI&t=1s" target="_blank" class="btn-primary" style="margin-top: 12px;">Watch Video →</a>
-            </div>
-            
-            <div class="card" data-testid="news-5">
-                <h3>Solar Multi-effect Desalination Stand Alone System</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">InDA, Mumbai | February 2020</p>
-                <p>Details a stand-alone solar multi-effect desalination system developed for sustainable water production.</p>
-            </div>
-            
-            <div class="card" data-testid="news-6">
-                <h3>IIT-Madras sets up India's 1st solar-powered desalination plant</h3>
-                <p style="color: var(--accent); font-weight: 500; margin: 8px 0;">The Times of India, Chennai | March 2019</p>
-                <p>Reports on IIT Madras establishing India's first solar-powered desalination plant for clean water production.</p>
-                <a href="https://timesofindia.indiatimes.com/city/chennai/iit-m-sets-up-indias-1st-solar-powered-desal-plant/articleshow/68505168.cms" target="_blank" class="btn-primary" style="margin-top: 12px;">Read Article →</a>
+            <div class="container">
+                <h2 class="section-title">News & Media Coverage</h2>
+                
+                <div class="card" data-testid="news-1">
+                    <h3 class="card-title">IIT-M's solar-powered unit aims at 10K litres of potable water per day</h3>
+                    <p class="news-source">The Times of India, Chennai | June 2025</p>
+                    <p class="card-text">Discusses IIT Madras's solar-powered desalination unit targeting a capacity of 10,000 litres of potable water daily.</p>
+                    <a href="https://timesofindia.indiatimes.com/city/chennai/iit-ms-solar-powered-desal-unit-aims-at-10k-litres-of-potable-water-per-day/articleshow/121605041.cms" target="_blank" class="btn-link">Read Article →</a>
+                </div>
+                
+                <div class="card" data-testid="news-2">
+                    <h3 class="card-title">IIT Madras has developed a solar-powered desalination system</h3>
+                    <p class="news-source">IIT Madras LinkedIn | 2025</p>
+                    <p class="card-text">Highlights the development of a solar-powered desalination system that converts seawater into clean drinking water using only renewable energy.</p>
+                    <a href="https://www.linkedin.com/posts/reachiitm_techtuesday-iitmadras-waterinnovation-activity-7327932020595085313-FOBt" target="_blank" class="btn-link">Read Article →</a>
+                </div>
+                
+                <div class="card" data-testid="news-3">
+                    <h3 class="card-title">A Solar Multi-Effect Desalination Success!</h3>
+                    <p class="news-source">IIT Madras Tech Talk | 2025</p>
+                    <p class="card-text">Features the success of a solar multi-effect desalination system developed at IIT Madras for producing fresh water.</p>
+                    <a href="https://tech-talk.iitm.ac.in/a-solar-multi-effect-desalination-success/" target="_blank" class="btn-link">Read Article →</a>
+                </div>
+                
+                <div class="card" data-testid="news-4">
+                    <h3 class="card-title">First plant to convert seawater into potable water using solar energy</h3>
+                    <p class="news-source">Polimer News | 2021</p>
+                    <p class="card-text">Showcases the first solar-powered plant in India to convert seawater into potable water, developed by IIT Madras.</p>
+                    <a href="https://www.youtube.com/watch?v=jPILXuN3_UI&t=1s" target="_blank" class="btn-link">Watch Video →</a>
+                </div>
+                
+                <div class="card" data-testid="news-5">
+                    <h3 class="card-title">Solar Multi-effect Desalination Stand Alone System</h3>
+                    <p class="news-source">InDA, Mumbai | February 2020</p>
+                    <p class="card-text">Details a stand-alone solar multi-effect desalination system developed for sustainable water production.</p>
+                </div>
+                
+                <div class="card" data-testid="news-6">
+                    <h3 class="card-title">IIT-Madras sets up India's 1st solar-powered desalination plant</h3>
+                    <p class="news-source">The Times of India, Chennai | March 2019</p>
+                    <p class="card-text">Reports on IIT Madras establishing India's first solar-powered desalination plant for clean water production.</p>
+                    <a href="https://timesofindia.indiatimes.com/city/chennai/iit-m-sets-up-indias-1st-solar-powered-desal-plant/articleshow/68505168.cms" target="_blank" class="btn-link">Read Article →</a>
+                </div>
             </div>
         </section>
 
         <!-- Contact Section -->
         <section id="contact" class="tab-content" data-testid="contact-section">
-            <h2 class="section-title">Get in Touch</h2>
-            
-            <div class="skill-grid">
-                <div class="card" data-testid="contact-info">
-                    <h3>Contact Information</h3>
-                    
-                    <div class="info-row">
-                        <div class="contact-icon">📍</div>
-                        <div>
-                            <p><strong>Address:</strong></p>
-                            <p>A-3/7 Cee Dee Yes Enclave, Taramani Link Road<br>Tansi Nagar, Velachery, Chennai<br>Tamil Nadu, India - 600042</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-row">
-                        <div class="contact-icon">📱</div>
-                        <div>
-                            <p><strong>Phone:</strong></p>
-                            <p>+91-9445492154</p>
-                        </div>
-                    </div>
-                    
-                    <div class="info-row">
-                        <div class="contact-icon">✉️</div>
-                        <div>
-                            <p><strong>Email:</strong></p>
-                            <p><a href="mailto:thilagan100@alumni.iitm.ac.in">thilagan100@alumni.iitm.ac.in</a></p>
-                            <p><a href="mailto:kthilagan177@gmail.com">kthilagan177@gmail.com</a></p>
-                        </div>
-                    </div>
-                </div>
+            <div class="container">
+                <h2 class="section-title">Get in Touch</h2>
                 
-                <div class="card" data-testid="memberships">
-                    <h3>Professional Memberships</h3>
-                    <div class="skill-item">Indian Desalination Association (LM5O1)</div>
-                    <div class="skill-item">ISHRAE Chennai Chapter (30662)</div>
-                    <div class="skill-item">International Solar Energy Society</div>
-                    <div class="skill-item">International Desalination Association (168542)</div>
+                <div class="contact-grid">
+                    <div class="card" data-testid="contact-info">
+                        <h3 class="card-title">Contact Information</h3>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div>
+                                <p class="contact-label">Address</p>
+                                <p class="contact-value">A-3/7 Cee Dee Yes Enclave, Taramani Link Road<br>Tansi Nagar, Velachery, Chennai<br>Tamil Nadu, India - 600042</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">📱</div>
+                            <div>
+                                <p class="contact-label">Phone</p>
+                                <p class="contact-value">+91-9445492154</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">✉️</div>
+                            <div>
+                                <p class="contact-label">Email</p>
+                                <p class="contact-value">
+                                    <a href="mailto:thilagan100@alumni.iitm.ac.in">thilagan100@alumni.iitm.ac.in</a><br>
+                                    <a href="mailto:kthilagan177@gmail.com">kthilagan177@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" data-testid="memberships">
+                        <h3 class="card-title">Professional Memberships</h3>
+                        <div class="skill-item">Indian Desalination Association (LM5O1)</div>
+                        <div class="skill-item">ISHRAE Chennai Chapter (30662)</div>
+                        <div class="skill-item">International Solar Energy Society</div>
+                        <div class="skill-item">International Desalination Association (168542)</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -901,129 +1223,120 @@
 
     <!-- Footer -->
     <footer data-testid="footer">
-        <p style="font-size: 1rem; font-weight: 500;">© 2025 Dr. Thilagan K. All rights reserved.</p>
-        <p style="font-size: 0.875rem; margin-top: 8px;">Advancing sustainable water solutions through solar energy</p>
+        <p class="footer-text">© 2025 Dr. Thilagan K. All rights reserved.</p>
+        <p class="footer-subtext">Advancing sustainable water solutions through solar energy</p>
     </footer>
 
     <script>
-        // Theme Toggle Functionality
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const htmlElement = document.documentElement;
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('.theme-icon');
         
-        // Check for saved theme preference or default to 'light'
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        htmlElement.setAttribute('data-theme', currentTheme);
-        updateThemeIcon(currentTheme);
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-            
-            // Animate the toggle button
-            gsap.to(themeToggle, {
-                rotation: 360,
-                duration: 0.5,
-                ease: 'power2.out',
-                onComplete: () => {
-                    gsap.set(themeToggle, { rotation: 0 });
-                }
-            });
-        });
-        
-        function updateThemeIcon(theme) {
-            themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
         }
         
-        // Tab Switching
-        const tabButtons = document.querySelectorAll('.tab-button');
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            // Animate toggle
+            gsap.fromTo(themeToggle, 
+                { rotate: 0 },
+                { rotate: 360, duration: 0.5, ease: 'power2.out' }
+            );
+        });
+        
+        // Tab Navigation
+        const navTabs = document.querySelectorAll('.nav-tab');
         const tabContents = document.querySelectorAll('.tab-content');
         
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetTab = button.getAttribute('data-tab');
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
                 
-                // Remove active class from all buttons and contents
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
+                // Remove active class from all tabs and contents
+                navTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
                 
-                // Add active class to clicked button and corresponding content
-                button.classList.add('active');
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
                 document.getElementById(targetTab).classList.add('active');
                 
-                // Smooth scroll to content
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                // Smooth scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
         
         // GSAP Animations
         gsap.registerPlugin(ScrollTrigger);
         
-        // Header animations
-        gsap.from('.profile-img', {
+        // Header Animations
+        gsap.from('.profile-image', {
             scale: 0,
             opacity: 0,
-            duration: 0.8,
-            ease: 'back.out(1.7)',
-            delay: 0.2
+            duration: 1,
+            ease: 'elastic.out(1, 0.7)',
+            delay: 0.3
         });
         
-        gsap.from('.header-content h1', {
-            y: 30,
+        gsap.from('.profile-name', {
+            y: 50,
             opacity: 0,
             duration: 0.8,
             ease: 'power3.out',
-            delay: 0.4
+            delay: 0.5
         });
         
-        gsap.from('.header-content p', {
-            y: 20,
+        gsap.from('.profile-title', {
+            y: 30,
             opacity: 0,
-            duration: 0.6,
+            duration: 0.8,
             ease: 'power2.out',
-            delay: 0.6
+            delay: 0.7
         });
         
-        gsap.from('.social-icon', {
+        gsap.from('.social-link', {
             scale: 0,
             opacity: 0,
-            duration: 0.4,
+            duration: 0.5,
             stagger: 0.1,
             ease: 'back.out(1.7)',
-            delay: 0.8
+            delay: 0.9
         });
         
-        // Card animations on scroll
-        gsap.utils.toArray('.card').forEach(card => {
+        // Card Animations on Scroll
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
             gsap.from(card, {
                 scrollTrigger: {
                     trigger: card,
-                    start: 'top 90%',
+                    start: 'top 85%',
                     toggleActions: 'play none none none'
                 },
-                y: 30,
+                y: 40,
                 opacity: 0,
-                duration: 0.6,
-                ease: 'power2.out'
+                duration: 0.7,
+                ease: 'power3.out'
             });
         });
         
-        // Section title animations
-        gsap.utils.toArray('.section-title').forEach(title => {
+        // Section Title Animations
+        const sectionTitles = document.querySelectorAll('.section-title');
+        sectionTitles.forEach(title => {
             gsap.from(title, {
                 scrollTrigger: {
                     trigger: title,
                     start: 'top 85%',
                     toggleActions: 'play none none none'
                 },
-                x: -30,
+                x: -50,
                 opacity: 0,
                 duration: 0.8,
                 ease: 'power2.out'
